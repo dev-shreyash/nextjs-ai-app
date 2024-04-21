@@ -8,7 +8,7 @@ type ConnObject={
 
 const connection:ConnObject={}
 
-async function dbConnect(): Promise<void>{
+export async function dbConnect(): Promise<void>{
     if(connection.isConnected){
         return;
     }
