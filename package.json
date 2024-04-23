@@ -20,6 +20,7 @@
     "lucide-react": "^0.368.0",
     "mongoose": "^8.3.2",
     "next": "14.2.1",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "react-email": "^2.1.1",
