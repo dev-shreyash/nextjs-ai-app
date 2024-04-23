@@ -1,27 +1,29 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { ClerkProvider } from '@clerk/nextjs'
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import AuthProvider from '../context/AuthProvider';
+import { Toaster } from '@/components/ui/toaster';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "solly",
-  description: " ",
+  title: 'True Feedback',
+  description: 'Real feedback from real people.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    
-    <ClerkProvider>
-
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" >
+      <AuthProvider>
+        <body className={inter.className}>
+          {children}
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
-    </ClerkProvider>
-
   );
 }
