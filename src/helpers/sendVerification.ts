@@ -11,7 +11,7 @@ export async function sendVerifictionEmail(
         resend.emails.send({
             from:'onboarding@resend.dev',
             to: email,
-            subject: 'mystry msg || Veryfcation code',
+            subject: 'Get Adviced || Veryfcation code',
             react:VerificationEmail({
                 username,
                 otp: verifyCode

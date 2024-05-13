@@ -4,13 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { signIn } from 'next-auth/react';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import {Form,FormField,FormItem,FormLabel,FormMessage} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
@@ -59,11 +53,11 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-white-800">
+      <div className="w-full max-w-md p-8 space-y-8 bg-gray-200  rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Welcome Back to True Feedback
+          <h1 className="text-2xl font-extrabold tracking-tight lg:text-5xl mb-6">
+            Welcome Back to get Advice
           </h1>
           <p className="mb-4">Sign in to continue your secret conversations</p>
         </div>

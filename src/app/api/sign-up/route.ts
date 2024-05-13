@@ -11,7 +11,7 @@ export async function POST(request:Request){
         const existingUserVerifiedByUsername =await 
         UserModel.findOne({
             username,
-            isVerified:true
+            isVerified:true 
         })
 
         if(existingUserVerifiedByUsername){
