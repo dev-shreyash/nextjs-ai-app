@@ -22,7 +22,7 @@ const VerificationEmail: React.FC<VerificationEmailProps> = ({ username, otp }) 
           fontStyle="normal"
         />
       </Head>
-      <Preview>Here's your verification code: {otp}</Preview>
+      <Preview>Here`s your verification code: {otp}</Preview>
       <Section>
         <Row>
           <Heading as="h2">Hello {username},</Heading>

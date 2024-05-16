@@ -5,4 +5,6 @@ export interface ApiResponse{
     message:string;
     isAcceptingMessages?:boolean;
     messages?:Array<Message>
+    data?:any;
+
 }
