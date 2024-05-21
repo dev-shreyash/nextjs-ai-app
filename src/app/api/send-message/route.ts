@@ -8,6 +8,8 @@ export async function POST(request:Request){
 
 
     const {username,content}=await request.json()
+    console.log(username)
+    console.log(content.toString())
     try {
         const user =await UserModel.findOne({username})
         if(!user){
@@ -17,10 +19,10 @@ export async function POST(request:Request){
         if (!user.isAcceptingMessage) {
             return Response.json({success:false,message:'user not accepting messages'},{status:402})
         }
- const newMessage={content,createdAt:new Date()}
+        const newMessage={content,createdAt:new Date()}
         user.messages.push(newMessage as Message) 
         await user.save()
-        return Response.json({success:true,message:'Message sent Successfully'},{status:404})
+        return Response.json({success:true,message:'Message sent Successfully'},{status:202})
 
     } catch (error) {
         console.error(error);

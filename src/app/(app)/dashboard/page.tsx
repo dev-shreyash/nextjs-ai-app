@@ -61,7 +61,8 @@ function UserDashboard() {
       setIsSwitchLoading(false);
       try {
         const response = await axios.get<ApiResponse>('/api/get-messages');
-        setMessages(response.data.messages || []);
+        console.log("response",response.data.data)
+        await setMessages(response.data.data || []);
         if (refresh) {
           toast({
             title: 'Refreshed Messages',
@@ -73,7 +74,7 @@ function UserDashboard() {
         toast({
           title: 'Error',
           description:
-            axiosError.response?.data.message ?? 'Failed to fetch messages',
+            axiosError.response?.data?.message ,
           variant: 'destructive',
         });
       } finally {
@@ -83,6 +84,8 @@ function UserDashboard() {
     },
     [setIsLoading, setMessages, toast]
   );
+
+
 
   // Fetch initial state from the server
   useEffect(() => {
@@ -119,7 +122,7 @@ function UserDashboard() {
    if (!session || !session.user) {
     return <div></div>;
    }
-  console.log("session:",session?.user)
+ // console.log("session:",session?.user)
 
   const  username  = session?.user?.username as User;
 
@@ -134,7 +137,12 @@ function UserDashboard() {
     });
   };
 
+
+
+  console.log(messages)
+
   return (
+    <>
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
       <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
 
@@ -192,6 +200,8 @@ function UserDashboard() {
         )}
       </div>
     </div>
+
+    </>
   );
 }
 
