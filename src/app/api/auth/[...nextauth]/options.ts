@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { dbConnect } from "@/lib/dbConnector";
-import UserModel from "@/model/user.model";
+import UserModel, { BankDetailsModel } from "@/model/user.model";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -51,6 +51,16 @@ export const authOptions: NextAuthOptions = {
         token.username = user.username;
         token.isVerified = user.isVerified;
         token.isAcceptingMessages = user.isAcceptingMessages;
+
+        // Fetch bank details and add them to the token
+        const bankDetails = await BankDetailsModel.findOne({ user: user._id });
+        if (bankDetails) {
+          token.bankDetails = {
+            name: bankDetails.name,
+            accountNumber: bankDetails.accountNumber,
+            ifscCode: bankDetails.ifscCode,
+          };
+        }
       }
       return token;
     },
@@ -60,6 +70,11 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username;
         session.user.isVerified = token.isVerified;
         session.user.isAcceptingMessages = token.isAcceptingMessages;
+
+        // Include bank details in the session
+        if (token.bankDetails) {
+          session.user.bankDetails = token.bankDetails;
+        }
       }
       return session;
     }

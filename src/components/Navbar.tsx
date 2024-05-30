@@ -13,14 +13,14 @@ const Navbar = () => {
   return (
     <nav className='p-4 md:p-6 shadow-md'>
         <div className='container mx-auto flex flex-col md:flex-row justify-between items-center'>
-            <Link className='text-xl font-bold mb-4 md:mb-0' href='/'>Get Adviced</Link>
+            <Link className='text-xl font-bold mb-4 md:mb-0' href='/'>Fund Your Homie</Link>
             {
                 session?(
                     <>
                     <Link href='/dashboard'> 
-                    <span className="mr-4">Welcome, {user?.username || user?.email}</span>
+                    <Button className="mr-4 w-full md:w-auto  bg-slate-900 text-white" >Dashboard</Button>
                     </Link>
-                    <Button className="w-full md:w-auto bg-slate-900 text-white" variant='outline' onClick={()=> signOut()}>Logout</Button>
+                    {/* <Button className="w-full md:w-auto bg-slate-900 text-white" variant='outline' onClick={()=> signOut()}>Logout</Button> */}
                     </>
                 ):(
                     <Link href='/sign-in'>

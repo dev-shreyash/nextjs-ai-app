@@ -2,6 +2,7 @@ import { dbConnect } from "@/lib/dbConnector";
 import bcrypt from "bcryptjs";
 import { sendVerifictionEmail } from "@/helpers/sendVerification";
 import UserModel from "@/model/user.model";
+import mongoose, { Schema, Document } from "mongoose";
 
 export async function POST(request:Request){
     await dbConnect()
@@ -61,7 +62,8 @@ export async function POST(request:Request){
                 verifiedCodeExpiry:expiryDate,
                 isVerified:false,
                 isAcceptingMessage:true,
-                messages:[]
+                messages:[],
+                bankDetails: null,
             })
             await newUser.save()
         }

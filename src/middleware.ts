@@ -16,6 +16,7 @@ export const config = {
     '/sign-in',
     '/sign-up',
     '/',
+    '/withdraw',
     '/dashboard/:path*',
     '/verify/:path*'
   ]

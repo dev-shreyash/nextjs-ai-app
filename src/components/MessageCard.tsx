@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { X } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +19,8 @@ import { Button } from './ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ApiResponse } from '@/types/ApiResponse';
 import { Message } from '@/model/user.model';
+import { format } from 'timeago.js';
+
 
 type MessageCardProps = {
   message: Message ;
@@ -83,7 +85,8 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
         
         </div>
       </CardHeader>
-      <CardContent></CardContent>
+      <CardContent>Donated You : {message.amount || 0} INR</CardContent>
+      <CardFooter>{format(new Date(message.createdAt))} by Random User</CardFooter>
     </Card>
   );
 }

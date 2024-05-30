@@ -26,19 +26,16 @@ export async function GET(request: Request) {
             return new Response(JSON.stringify({ success: false, message: 'User not found' }), { status: 404 });
         }
 
-        // Log the user document for debugging
-        console.log("User Document:", userDoc);
+       // console.log("User Document:", userDoc);
 
-        // Check if the messages field exists and is an array
         if (!Array.isArray(userDoc.messages)) {
             return new Response(JSON.stringify({ success: false, message: 'No messages found' }), { status: 404 });
         }
 
-        // Sort the messages array by createdAt in descending order
         const sortedMessages = userDoc.messages.sort((a, b) => {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });
-        console.log("sorted:::",sortedMessages)
+       // console.log("sorted:::",sortedMessages)
 
         return new Response(JSON.stringify({ success: true, data: sortedMessages }), { status: 200 });
     } catch (error) {

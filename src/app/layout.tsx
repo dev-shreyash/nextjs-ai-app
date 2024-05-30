@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
 import AuthProvider from '@/context/AuthProvider';
-import Navbar from '@/components/Navbar';
+import ClientWrapper from './ClientWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,14 +15,12 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" >
+    <html lang="en">
       <AuthProvider>
         <body className={inter.className}>
-          <Navbar/>
-          {children}
-          <Toaster />
+          <ClientWrapper>{children}</ClientWrapper>
         </body>
       </AuthProvider>
     </html>
