@@ -17,6 +17,8 @@ import { useForm } from 'react-hook-form';
 import { AcceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import UserBalancePage from '@/components/UserBalancePage';
+
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -39,7 +41,9 @@ function UserDashboard() {
       console.error('Failed to sign out:', error);
     }
   };
+
   
+
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
@@ -193,7 +197,8 @@ function UserDashboard() {
           </span>
         </div>
         <div className='flex justify-between items-center font-bold p-5 bg-blue-200'>Total Amount Received: {totalAmountReceived} INR <Link href={'/withdraw'}><Button >withdraw</Button></Link> </div>
-        
+        <div className='flex justify-between items-center font-bold p-5 bg-blue-200'><UserBalancePage/></div>
+
 
         <Separator />
 

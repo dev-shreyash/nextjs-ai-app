@@ -4,15 +4,13 @@ import { authOptions } from '../auth/[...nextauth]/options';
 import { dbConnect } from '@/lib/dbConnector';
 import UserModel, { BankDetailsModel } from '@/model/user.model';
 import { BankDetailsSchema } from '@/schemas/BankDetailsSchema';
-import mongoose from 'mongoose';
-import { User } from 'next-auth';
 
 export async function POST(req: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
   console.log(session);
-  
+
   if (!session || !session.user) {
     return new Response(JSON.stringify({ success: false, message: 'Not authenticated' }), { status: 401 });
   }
@@ -28,32 +26,31 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Fetch the user from the database
-    const userDocument = await UserModel.findById(userId).exec();
+    // Fetch the user from the database along with their bank details
+    const userDocument = await UserModel.findById(userId).populate('bankDetails').exec();
     console.log(userDocument);
+
     if (!userDocument) {
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
-    // Create a new bank details entry
-    const newBankDetails = new BankDetailsModel({
-      name,
-      accountNumber,
-      ifscCode,
-      user: userDocument._id 
-    });
-   // console.log(newBankDetails)
+    const bankDetails = userDocument.bankDetails;
 
-    // Save the bank details to the database
-    await newBankDetails.save();
+    if (!bankDetails) {
+      return NextResponse.json({ success: false, message: 'No bank details found for this user' }, { status: 404 });
+    }
 
-    // Associate the bank details with the user
-    userDocument.bankDetails = newBankDetails._id;
-    await userDocument.save();
+    // Update the existing bank details
+    bankDetails.name = name;
+    bankDetails.accountNumber = accountNumber;
+    bankDetails.ifscCode = ifscCode;
 
-    return new Response(JSON.stringify({ success: true, message: 'Bank details added successfully' }), { status: 200 });
+    // Save the updated bank details
+    await bankDetails.save();
+
+    return new Response(JSON.stringify({ success: true, message: 'Bank details updated successfully' }), { status: 200 });
   } catch (error) {
     console.error('Error during POST request:', error);
-    return NextResponse.json({ success: false, message: 'Something went wrong while creating bank details' }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Something went wrong while updating bank details' }, { status: 500 });
   }
 }

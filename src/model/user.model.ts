@@ -20,6 +20,7 @@ const BankDetailsSchema: Schema<BankDetails> = new Schema({
 
 export const BankDetailsModel: Model<BankDetails> = mongoose.models.BankDetails || mongoose.model<BankDetails>('BankDetails', BankDetailsSchema);
 
+
 // Message Interface
 export interface Message extends Document {
   content: string;
@@ -45,6 +46,7 @@ export interface User extends Document {
   isAcceptingMessage: boolean;
   messages: Types.DocumentArray<Message>; // Array of Message subdocuments
   bankDetails: Types.ObjectId | BankDetails; // Reference to a single BankDetails
+  balance: number;
   createdAt: Date;
 }
 
@@ -64,6 +66,7 @@ const UserSchema: Schema<User> = new Schema({
   isAcceptingMessage: { type: Boolean, required: true, default: true },
   messages: [MessageSchema],
   bankDetails: { type: Schema.Types.ObjectId, ref: 'BankDetails' }, // Reference to a single BankDetails
+  balance: { type: Number, default: 0 }, // Initial balance is 0
   createdAt: { type: Date, required: true, default: Date.now },
 });
 

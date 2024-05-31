@@ -73,7 +73,8 @@ const Page = () => {
         image: "https://manuarora.in/logo.png",
         handler: function (response) {
           alert("Razorpay Response: " + response.razorpay_payment_id);
-          submitMessage();
+          handleDeposit(); // Call handleDeposit function here after successful payment
+          submitMessage(); // Move the submitMessage call to the handler as well
         },
         prefill: {
           name: "Shreyash Godmon",
@@ -110,17 +111,46 @@ const Page = () => {
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsSubmitting(true);
-    if (selectedAmount) {
-      // If an amount is selected, initiate payment first
-      const paymentSuccess = await handlePayment();
-      if (!paymentSuccess) {
-        setIsSubmitting(false);
-        return;
+    try {
+      if (selectedAmount) {
+        // If an amount is selected, initiate payment first
+        const paymentSuccess = await handlePayment();
+        if (!paymentSuccess) {
+          setIsSubmitting(false);
+          return;
+        }
+      } else {
+        // If no amount is selected, just submit the message
+        await submitMessage(data);
       }
-    } else {
-      // If no amount is selected, just submit the message
-      await submitMessage(data);
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      setIsSubmitting(false);
     }
+  };
+
+  const handleDeposit = async () => {
+    console.log('Handling deposit');
+    try {
+      const response = await axios.post('/api/deposit', { amount: selectedAmount, username: username });
+      console.log('Deposit response:', response.data); 
+      if (response.data.success) {
+        console.log('Deposit success');
+        toast({
+          title: 'Deposit Success',
+          description: 'Amount deposited successfully.',
+        });
+      }
+      return true;
+    } catch (error) {
+      console.error('Error during deposit:', error);
+      toast({
+        title: 'Deposit Failed',
+        description: 'Failed to deposit amount. Please try again.',
+        variant: 'destructive',
+      });
+    }
+    return false;
   };
 
   const submitMessage = async (data?: z.infer<typeof messageSchema>) => {
