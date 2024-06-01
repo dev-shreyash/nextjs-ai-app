@@ -1,4 +1,3 @@
-// src/app/api/razorpay/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import shortid from 'shortid';
 import Razorpay from 'razorpay';
@@ -12,13 +11,10 @@ interface RazorpayOrderOptions {
 
 export async function POST(req: NextRequest) {
   const { taxAmt } = await req.json();
- // console.log('RAZORPAY_KEY:', process.env.RAZORPAY_KEY);
- // console.log('RAZORPAY_SECRET:', process.env.RAZORPAY_SECRET);
-  
+
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY!,
     key_secret: process.env.RAZORPAY_SECRET!,
-    
   });
 
   const payment_capture = 1;
@@ -43,7 +39,9 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Allow only POST requests
+// Use Node.js runtime to ensure compatibility with Node.js core modules
+export const runtime = 'nodejs';
+
 export const config = {
   api: {
     bodyParser: false,
