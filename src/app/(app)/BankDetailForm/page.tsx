@@ -70,51 +70,49 @@ const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name = '', accountNum
   };
 
   return (
-    <>
-      <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-        <h1 className="text-4xl font-bold mb-4">{isUpdate ? 'Update Your Bank Details' : 'Enter Your Bank Details'}</h1>
+    <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+      <h1 className="text-4xl font-bold mb-4">{isUpdate ? 'Update Your Bank Details' : 'Enter Your Bank Details'}</h1>
 
-        <Form {...form}>
-          <FormField name="name" control={form.control} render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel className='text-xl font-bold'>Name</FormLabel>
-              <Input {...field} placeholder="Enter your name" />
-              <FormDescription className='text-xs p-0 m-0'>Enter name as per bank details.</FormDescription>
-              {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
-            </FormItem>
-          )} />
+      <Form {...form}>
+        <FormField name="name" control={form.control} render={({ field, fieldState }) => (
+          <FormItem>
+            <FormLabel className='text-xl font-bold'>Name</FormLabel>
+            <Input {...field} placeholder="Enter your name" />
+            <FormDescription className='text-xs p-0 m-0'>Enter name as per bank details.</FormDescription>
+            {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
+          </FormItem>
+        )} />
 
-          <FormField name="accountNumber" control={form.control} render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel className='text-xl font-bold'>Account Number</FormLabel>
-              <Input {...field} placeholder="Enter your account number" />
-              <FormDescription className='text-xs p-0 m-0'>Enter a 9-18 digit bank account number only</FormDescription>
-              {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
-            </FormItem>
-          )} />
+        <FormField name="accountNumber" control={form.control} render={({ field, fieldState }) => (
+          <FormItem>
+            <FormLabel className='text-xl font-bold'>Account Number</FormLabel>
+            <Input {...field} placeholder="Enter your account number" />
+            <FormDescription className='text-xs p-0 m-0'>Enter a 9-18 digit bank account number only</FormDescription>
+            {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
+          </FormItem>
+        )} />
 
-          <FormField name="ifscCode" control={form.control} render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel className='text-xl font-bold'>IFSC Code</FormLabel>
-              <Input {...field} placeholder="Enter your IFSC code" />
-              <FormDescription className='text-xs p-0 m-0'>Enter an 11-digit alphanumeric IFSC code only.</FormDescription>
-              {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
-            </FormItem>
-          )} />
+        <FormField name="ifscCode" control={form.control} render={({ field, fieldState }) => (
+          <FormItem>
+            <FormLabel className='text-xl font-bold'>IFSC Code</FormLabel>
+            <Input {...field} placeholder="Enter your IFSC code" />
+            <FormDescription className='text-xs p-0 m-0'>Enter an 11-digit alphanumeric IFSC code only.</FormDescription>
+            {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
+          </FormItem>
+        )} />
 
-          <Button className='my-8' type="submit" onClick={form.handleSubmit(onSubmit)}>
-            {isUpdate ? 'Update' : 'Submit'}
-          </Button>
-        </Form>
+        <Button className='my-8' type="submit" onClick={form.handleSubmit(onSubmit)}>
+          {isUpdate ? 'Update' : 'Submit'}
+        </Button>
+      </Form>
 
-        {formData && (
-          <div>
-            <h2>Form Data Saved:</h2>
-            <pre>{JSON.stringify(formData, null, 2)}</pre>
-          </div>
-        )}
-      </div>
-    </>
+      {formData && (
+        <div>
+          <h2>Form Data Saved:</h2>
+          <pre>{JSON.stringify(formData, null, 2)}</pre>
+        </div>
+      )}
+    </div>
   );
 };
 
