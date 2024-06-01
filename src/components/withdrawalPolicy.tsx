@@ -2,7 +2,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@r
 
 const WithdrawalPolicy = () => {
   return (
-    <Accordion type="single" >
+    <Accordion type="single" defaultValue="item-1">
       <AccordionItem value="item-1">
         <AccordionTrigger>
           <h2 className='font-bold text-lg underline'>Withdrawal Policy</h2>
@@ -25,7 +25,7 @@ const WithdrawalPolicy = () => {
 
             <p><strong>Limitations and Restrictions:</strong></p>
             <p>We reserve the right to limit the number and amount of withdrawals in a given period to prevent fraud and ensure compliance with regulatory requirements.</p>
-            <p>Withdrawals are subject to the availability of funds in the user's account.</p>
+            <p>Withdrawals are subject to the availability of funds in the user&apos;s account.</p>
 
             <p><strong>Verification and Compliance:</strong></p>
             <p>We may require additional verification or documentation before processing a withdrawal request to ensure compliance with legal and regulatory obligations.</p>
@@ -39,7 +39,7 @@ const WithdrawalPolicy = () => {
             <p>For any questions or concerns regarding our withdrawal policy, please contact our customer support team.</p>
 
             <p><em>Note: This withdrawal policy is integrated within our overall Terms and Conditions, which govern your use of our website and services. Please review the entire document to understand your rights and obligations fully.</em></p>
-            <a className='underline' href='https://merchant.razorpay.com/policy/OEe23tN62CDfsp/terms' target="_blank"> Terms & Conditions</a>
+            <a className='underline' href='https://merchant.razorpay.com/policy/OEe23tN62CDfsp/terms' target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
           </div>
         </AccordionContent>
       </AccordionItem>
