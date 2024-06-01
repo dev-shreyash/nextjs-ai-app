@@ -193,7 +193,7 @@ function UserDashboard() {
             disabled={isSwitchLoading}
           />
           <span className="ml-2">
-            Accept Messages: {acceptMessages ? 'On' : 'Off'}
+            Accept Messages/Funds: {acceptMessages ? 'On' : 'Off'}
           </span>
         </div>
         <div className='flex justify-between items-center font-bold p-5 bg-blue-200'>Total Amount Received: {totalAmountReceived} INR <Link href={'/withdraw'}><Button >withdraw</Button></Link> </div>

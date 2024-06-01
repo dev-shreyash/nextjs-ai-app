@@ -12,8 +12,8 @@ interface RazorpayOrderOptions {
 
 export async function POST(req: NextRequest) {
   const { taxAmt } = await req.json();
-  console.log('RAZORPAY_KEY:', process.env.RAZORPAY_KEY);
-  console.log('RAZORPAY_SECRET:', process.env.RAZORPAY_SECRET);
+ // console.log('RAZORPAY_KEY:', process.env.RAZORPAY_KEY);
+ // console.log('RAZORPAY_SECRET:', process.env.RAZORPAY_SECRET);
   
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY!,

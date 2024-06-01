@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from 'react';
-import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import React, { useState, useEffect } from 'react';
+import { Form, FormField, FormItem, FormLabel, FormMessage,FormDescription } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
@@ -21,6 +21,9 @@ const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState(null); // No default amount
   const { toast } = useToast();
+  const [acceptingStaus,setAcceptingStatus]=useState(false)
+  const [isFunded,setIsFunded]=useState(false)
+  const [amountFunded, setAmountFunded]=useState(null)
 
   // Function to extract username from the URL
   function getUsernameFromCurrentUrl() {
@@ -72,7 +75,7 @@ const Page = () => {
         description: "Thank you for your test donation",
         image: "https://manuarora.in/logo.png",
         handler: function (response) {
-          alert("Razorpay Response: " + response.razorpay_payment_id);
+       //   alert("Razorpay Response: " + response.razorpay_payment_id);
           handleDeposit(); // Call handleDeposit function here after successful payment
           submitMessage(); // Move the submitMessage call to the handler as well
         },
@@ -133,11 +136,11 @@ const Page = () => {
     console.log('Handling deposit');
     try {
       const response = await axios.post('/api/deposit', { amount: selectedAmount, username: username });
-      console.log('Deposit response:', response.data); 
+     // console.log('Deposit response:', response.data); 
       if (response.data.success) {
-        console.log('Deposit success');
+    //    console.log('Deposit success');
         toast({
-          title: 'Deposit Success',
+          title: `Success ${selectedAmount} INR sent to ${username}`,
           description: 'Amount deposited successfully.',
         });
       }
@@ -166,6 +169,8 @@ const Page = () => {
         title: `Success ${selectedAmount} INR sent to ${username}`,
         description: response.data.message,
       });
+      setAmountFunded(selectedAmount)
+      setIsFunded(true)
       setIsSubmitting(false);
       form.reset(); // Reset the form after successful submission
       setSelectedAmount(null); // Reset selected amount
@@ -192,10 +197,36 @@ const Page = () => {
     }
   };
 
+
+
+  //fecth status
+
+  useEffect(() => {
+    const fetchAcceptMessages = async () => {
+      try {
+        const response = await axios.post('/api/get-accepting-message', { username });
+        if (response.data && response.data.success) {
+       //   console.log(response.data.acceptingMessage);
+          if (response.data.acceptingMessage == true) {
+            setAcceptingStatus(true)
+          }
+        } else {
+          console.error('Error: ', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    if (username) {
+      fetchAcceptMessages();
+    }
+  }, [username]);
+
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">Advice your homie</h1>
-      <div>Send Anonymous Message to @{username}</div>
+      <h1 className="text-4xl font-bold mb-4">Fund your homie</h1>
+      <div>Send Anonymous Funds with Message to @{username}</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto mt-10 p-4 border border-gray-300 rounded-lg">
           <FormItem className="mb-4">
@@ -236,6 +267,9 @@ const Page = () => {
               ))}
             </div>
           </FormItem>
+          
+          {acceptingStaus ?
+          <>
           <Button type="submit" className='flex justify-end ' disabled={isSubmitting || !form.getValues('content')}>
             {isSubmitting ? (
               <>
@@ -246,8 +280,16 @@ const Page = () => {
               'Send Message'
             )}
           </Button>
+           <FormDescription className='text-s p-0 m-2 text-green-600'>User is Accepting Funds</FormDescription>
+           </>
+          :
+          <FormDescription className='text-s p-0 m-2 text-red-600'>User is Not Accepting Funds</FormDescription>
+          }
         </form>
       </Form>
+      {isFunded &&
+      <h1>Thank you For funding your homie with {amountFunded || 0} INR</h1>
+      }
     </div>
   );
 };
