@@ -1,5 +1,6 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } fr
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import axios, { AxiosError } from 'axios';
-import { BankDetailsSchema, BankDetailsFormData } from '../../../schemas/BankDetailsSchema'; // Import BankDetailsSchema
+import { BankDetailsSchema, BankDetailsFormData } from '../../../schemas/BankDetailsSchema';
 import { ApiResponse } from '@/types/ApiResponse';
 
 interface BankDetailsFormProps {
@@ -17,14 +18,14 @@ interface BankDetailsFormProps {
   isUpdate?: boolean;
 }
 
-const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name, accountNumber, ifscCode, isUpdate }) => {
+const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name = '', accountNumber = '', ifscCode = '', isUpdate = false }) => {
   const [formData, setFormData] = useState<BankDetailsFormData | null>(null);
   const form = useForm<BankDetailsFormData>({
     resolver: zodResolver(BankDetailsSchema),
     defaultValues: {
-      name: name || '',
-      accountNumber: accountNumber || '',
-      ifscCode: ifscCode || '',
+      name,
+      accountNumber,
+      ifscCode,
     },
   });
 
@@ -71,7 +72,7 @@ const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name, accountNumber, 
   return (
     <>
       <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">{isUpdate ? 'Update Your Bank Details' : 'Enter Your Bank Details'}</h1>
+        <h1 className="text-4xl font-bold mb-4">{isUpdate ? 'Update Your Bank Details' : 'Enter Your Bank Details'}</h1>
 
         <Form {...form}>
           <FormField name="name" control={form.control} render={({ field, fieldState }) => (
