@@ -9,7 +9,13 @@ interface RazorpayOrderOptions {
   payment_capture: number;
 }
 
+export const runtime = 'nodejs';
+
 export async function POST(req: NextRequest) {
+  if (req.method !== 'POST') {
+    return new NextResponse('Method Not Allowed', { status: 405 });
+  }
+
   const { taxAmt } = await req.json();
 
   const razorpay = new Razorpay({
@@ -38,12 +44,3 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify(err), { status: 400 });
   }
 }
-
-// Use Node.js runtime to ensure compatibility with Node.js core modules
-export const runtime = 'nodejs';
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
