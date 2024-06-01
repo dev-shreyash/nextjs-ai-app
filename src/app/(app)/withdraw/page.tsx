@@ -1,103 +1,119 @@
 "use client"
-import BankDetailsForm from '../BankDetailForm/page'
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
+import { BankDetailsSchema, BankDetailsFormData } from '../../../schemas/BankDetailsSchema';
+import { ApiResponse } from '@/types/ApiResponse';
 
-const Page = () => {
-  const [name, setName] = useState<string>('');
-  const [accountNumber, setAccountNumber] = useState<string>('');
-  const [ifscCode, setIfscCode] = useState<string>('');
-  const [bankDetailsFetched, setBankDetailsFetched] = useState<boolean>(false);
+interface BankDetailsFormProps {
+  name?: string;
+  accountNumber?: string;
+  ifscCode?: string;
+  isUpdate?: boolean;
+}
+
+const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name, accountNumber, ifscCode, isUpdate }) => {
+  const [formData, setFormData] = useState<BankDetailsFormData | null>(null);
+  const form = useForm<BankDetailsFormData>({
+    resolver: zodResolver(BankDetailsSchema),
+    defaultValues: {
+      name: name || '',
+      accountNumber: accountNumber || '',
+      ifscCode: ifscCode || '',
+    },
+  });
+
   const { toast } = useToast();
-  const [openDialog, setOpenDialog] = useState(false);
-  const router = useRouter();
 
-  const fetchBankDetails = async () => {
+  const onSubmit: SubmitHandler<BankDetailsFormData> = async (data) => {
     try {
-      const response = await axios.get('/api/get-BankDetails');
-      if (response.data.success) {
-        const bankDetails = response.data.bankDetails;
-        setName(bankDetails.name);
-        setAccountNumber(bankDetails.accountNumber);
-        setIfscCode(bankDetails.ifscCode);
-        setBankDetailsFetched(true);
-        setOpenDialog(true);
-      } else {
-        throw new Error(response.data.message);
+      const endpoint = isUpdate ? '/api/update-BankDetails' : '/api/add-BankDetails';
+      const response = await axios.post(endpoint, data);
+
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Something went wrong');
       }
+
+      console.log('Form data submitted:', response.data);
+
+      setFormData(data);
+
+      toast({
+        title: 'Success',
+        description: `Bank details ${isUpdate ? 'updated' : 'submitted'} successfully.`,
+      });
+
+      form.reset();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
-      console.error('Error fetching bank details:', error);
+      console.error(`Error during ${isUpdate ? 'updating' : 'submitting'} bank details:`, error);
+
+      const axiosError = error as AxiosError<ApiResponse>;
+
+      let errorMessage = axiosError.response?.data.message || 'There was a problem with your setting bank details. Please try again.';
+
+      toast({
+        title: `Error during ${isUpdate ? 'updating' : 'submitting'} bank details`,
+        description: errorMessage,
+        variant: 'destructive',
+      });
     }
   };
 
-  useEffect(() => {
-    fetchBankDetails();
-  }, []);
-
-  const handleConfirm = () => {
-    setOpenDialog(false);
-    toast({
-      title: 'Success',
-      description: 'Bank details submitted successfully.',
-    });
-        router.replace('/withdraw/amount')
-  };
-
-  const handleCancel = () => {
-    setOpenDialog(false);
-    setBankDetailsFetched(false);
-  };
-
   return (
-    <div>
-      {bankDetailsFetched ? (
-        <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-          <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
-            <AlertDialogTrigger asChild>
-              <div className="hidden" />
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Confirm Bank Details</AlertDialogTitle>
-                <AlertDialogDescription>
-                    These details are fetched from your previous form submission
-                  <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-                    <p><strong>Name:</strong> {name}</p>
-                    <p><strong>Account Number:</strong> {accountNumber}</p>
-                    <p><strong>IFSC Code:</strong> {ifscCode}</p>
-                  </div>
-                  Please confirm your bank details. This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel onClick={handleCancel}>
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction onClick={handleConfirm}>
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      ) : (
-        <BankDetailsForm name={name} accountNumber={accountNumber} ifscCode={ifscCode} isUpdate={!!name && !!accountNumber && !!ifscCode} />
-      )}
-    </div>
+    <>
+      <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+        <h1 className="text-4xl font-bold mb-4">{isUpdate ? 'Update Your Bank Details' : 'Enter Your Bank Details'}</h1>
+
+        <Form {...form}>
+          <FormField name="name" control={form.control} render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel className='text-xl font-bold'>Name</FormLabel>
+              <Input {...field} placeholder="Enter your name" />
+              <FormDescription className='text-xs p-0 m-0'>Enter name as per bank details.</FormDescription>
+              {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
+            </FormItem>
+          )} />
+
+          <FormField name="accountNumber" control={form.control} render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel className='text-xl font-bold'>Account Number</FormLabel>
+              <Input {...field} placeholder="Enter your account number" />
+              <FormDescription className='text-xs p-0 m-0'>Enter a 9-18 digit bank account number only</FormDescription>
+              {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
+            </FormItem>
+          )} />
+
+          <FormField name="ifscCode" control={form.control} render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel className='text-xl font-bold'>IFSC Code</FormLabel>
+              <Input {...field} placeholder="Enter your IFSC code" />
+              <FormDescription className='text-xs p-0 m-0'>Enter an 11-digit alphanumeric IFSC code only.</FormDescription>
+              {fieldState.error && <FormMessage>{fieldState.error.message}</FormMessage>}
+            </FormItem>
+          )} />
+
+          <Button className='my-8' type="submit" onClick={form.handleSubmit(onSubmit)}>
+            {isUpdate ? 'Update' : 'Submit'}
+          </Button>
+        </Form>
+
+        {formData && (
+          <div>
+            <h2>Form Data Saved:</h2>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
-export default Page;
+export default BankDetailsForm;
