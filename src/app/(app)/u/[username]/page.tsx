@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useToast } from '@/components/ui/use-toast';
 import axios, { AxiosError } from 'axios';
+import Link from 'next/link';
 
 
 // Define the schema for form validation
@@ -230,11 +231,13 @@ const Page = () => {
   }, [username]);
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">Fund your homie</h1>
+    <div className='flex flex-col h-full flex-grow'>
+    <div className="flex-grow flex flex-col items-center justify-center px-0 md:px-0 bg-white  py-0 text-black">
+    <div className="my-0 mx-4 md:mx-8 lg:mx-auto h-full p-6   bg-gray-200 rounded w-full max-w-6xl">     
+     <h1 className="text-4xl font-bold mb-4">Fund your homie</h1>
       <div>Send Anonymous Funds with Message to @{username}</div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto mt-10 p-4 border border-gray-300 rounded-lg">
+      <Form  {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto mt-10 p-4 border border-gray-400 bg-white rounded-lg">
           <FormItem className="mb-4">
             <FormLabel htmlFor="input" className="block text-gray-700 mb-2">Enter something:</FormLabel>
             <h2>Fund your Homie</h2>
@@ -293,10 +296,28 @@ const Page = () => {
           }
         </form>
       </Form>
+      <div className='mb-7'>
       {isFunded &&
-      <h1>Thank you For funding your homie with {amountFunded || 0} INR</h1>
-      }
+      <h1 >Thank you For funding your homie with {amountFunded || 0} INR</h1>
+      }</div>
+
+      <div className='text-xl'>
+        <h1 className='font-bold text-xxl'>Fund Your Homie.</h1>
+        <p>is an online crowd funding platform. designed for simplicity to use 
+          and keep donor anonymous while funding. feel free to use it your info will
+          not be collected.
+        </p>
+        <div className='mt-7'>
+        <p>For more info visit <Link className='underline' href={'/about'}>about.</Link>        </p>
+
+        <p>To get in touch visit <Link className='underline' href={'/contact'}>contact.</Link>        </p>
+
+        </div>
+      </div>
     </div>
+    </div>
+    </div>
+
   );
 };
 

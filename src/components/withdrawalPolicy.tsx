@@ -1,3 +1,4 @@
+import React from 'react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 
 const WithdrawalPolicy = () => {
@@ -11,7 +12,7 @@ const WithdrawalPolicy = () => {
           <div className='text-sm p-4'>
             <p><strong>Eligibility:</strong></p>
             <p>Withdrawals can only be made by registered users who have successfully completed all necessary verification processes.</p>
-            
+
             <p><strong>Withdrawal Requests:</strong></p>
             <p>Users must submit a withdrawal request through the designated section on our website.</p>
             <p>The minimum and maximum withdrawal amounts will be specified on the withdrawal request page and are subject to change at our discretion.</p>

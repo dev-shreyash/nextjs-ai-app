@@ -62,9 +62,11 @@ const Page = () => {
   };
 
   return (
-    <div>
-      {bankDetailsFetched ? (
-        <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+    <div className='flex flex-col h-full flex-grow'>
+    <div className="flex-grow flex flex-col items-center justify-center px-0 md:px-0 bg-white  py-0 text-black">
+    <div className="my-0 mx-4 md:mx-8 lg:mx-auto h-full p-6   bg-gray-200 rounded w-full max-w-6xl">     
+          {bankDetailsFetched ? (
+        <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-gray-200 rounded w-full max-w-6xl">
           <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
             <AlertDialogTrigger asChild>
               <div className="hidden" />
@@ -94,8 +96,18 @@ const Page = () => {
           </AlertDialog>
         </div>
       ) : (
+        <>
         <BankDetailsForm name={name} accountNumber={accountNumber} ifscCode={ifscCode} isUpdate={!!name && !!accountNumber && !!ifscCode} />
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold">Security of Your Bank Details:</h2>
+          <p className="text-gray-700 mt-2">
+            At Fund Your Homie, we prioritize the safety and security of your personal information. Rest assured that any bank details you provide are handled with the utmost care and are not shared or mishandled in any way.
+          </p>
+        </div>
+        </>
       )}
+    </div>
+    </div>
     </div>
   );
 };

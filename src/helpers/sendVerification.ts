@@ -12,8 +12,8 @@ export async function sendVerificationEmail(
         console.log("email:", email)
         const reactContent = React.createElement(VerificationEmail, { username, otp: verifyCode });
         const data = await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: 'bhosaleshreyash2@gmail.com',
+            from: 'onboarding@fundyourhomie.mooo.com',
+            to: email,
             subject: 'Fund Your Homie || Veryfcation code',
             react: reactContent
         })

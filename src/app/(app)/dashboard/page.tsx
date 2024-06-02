@@ -164,10 +164,9 @@ function UserDashboard() {
 
   return (
     <>
-        <div className='flex flex-col h-full flex-grow'>
-
-      <div className="flex-grow flex flex-col items-center justify-center px-0 md:px-0 py-0 bg-gray-200 text-black">
-      <div className="my-0 mx-4 md:mx-8 lg:mx-auto h-full p-6  bg-white rounded w-full max-w-6xl">
+      <div className='flex flex-col h-full flex-grow'>
+      <div className="flex-grow flex flex-col items-center justify-center px-0 md:px-0 bg-white  py-0 text-black">
+      <div className="my-0 mx-4 md:mx-8 lg:mx-auto h-full p-6   bg-gray-200 rounded w-full max-w-6xl">
         <div className='flex  lg:flex-row justify-between items-center sm:flex-col'> 
         <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
         

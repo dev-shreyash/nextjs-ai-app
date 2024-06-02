@@ -29,7 +29,7 @@ const VerificationEmail: React.FC<VerificationEmailProps> = ({ username, otp }) 
         </Row>
         <Row>
           <Text>
-            Thank you for registering. Please use the following verification code to complete your registration:
+            Thank you for registering to FYH Our Homie. Please use the following verification code to complete your registration:
           </Text>
         </Row>
         <Row>

@@ -70,7 +70,7 @@ const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name, accountNumber, 
 
   return (
     <>
-      <div className="my-8 text-xl mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+      <div className="my-8 text-xl  md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-5.5xl">
       <h1 className="text-4xl font-bold mb-4">{isUpdate ? 'Update Your Bank Details' : 'Enter Your Bank Details'}</h1>
 
         <Form {...form}>
