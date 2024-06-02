@@ -1,8 +1,8 @@
 import { dbConnect } from "@/lib/dbConnector";
 import bcrypt from "bcryptjs";
-import { sendVerifictionEmail } from "@/helpers/sendVerification";
 import UserModel from "@/model/user.model";
 import mongoose, { Schema, Document } from "mongoose";
+import { sendVerificationEmail } from "@/helpers/sendVerification";
 
 export async function POST(request:Request){
     await dbConnect()
@@ -70,7 +70,7 @@ export async function POST(request:Request){
 
         //send verification code
 
-        const emailResponse =await sendVerifictionEmail(email,username,verifyCode)
+        const emailResponse =await sendVerificationEmail(email,username,verifyCode)
         console.log('emailResponse:',emailResponse)
         if(emailResponse.success){
             return Response.json(

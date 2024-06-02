@@ -23,7 +23,7 @@ const BankDetailsForm: React.FC<BankDetailsFormProps> = ({ name, accountNumber, 
     resolver: zodResolver(BankDetailsSchema),
     defaultValues: {
       name: name || '',
-      accountNumber: accountNumber.toString() || '',
+      accountNumber: accountNumber || '',
       ifscCode: ifscCode || '',
     },
   });

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   const session = await getServerSession(authOptions);
   console.log(session);
-
+  
   if (!session || !session.user) {
     return new Response(JSON.stringify({ success: false, message: 'Not authenticated' }), { status: 401 });
   }
@@ -26,27 +26,36 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Fetch the user from the database along with their bank details
-    const userDocument = await UserModel.findById(userId).populate('bankDetails').exec();
+    // Fetch the user from the database
+    const userDocument = await UserModel.findById(userId).exec();
     console.log(userDocument);
-
     if (!userDocument) {
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
-    const bankDetails = userDocument.bankDetails;
-
+    // If user has existing bank details, update them; otherwise, create new ones
+    let bankDetails = await BankDetailsModel.findOne({ user: userId }).exec();
     if (!bankDetails) {
-      return NextResponse.json({ success: false, message: 'No bank details found for this user' }, { status: 404 });
+      // Create a new bank details entry
+      bankDetails = new BankDetailsModel({
+        name,
+        accountNumber,
+        ifscCode,
+        user: userDocument._id 
+      });
+    } else {
+      // Update existing bank details
+      bankDetails.name = name;
+      bankDetails.accountNumber = accountNumber;
+      bankDetails.ifscCode = ifscCode;
     }
 
-    // Update the existing bank details
-    bankDetails.name = name;
-    bankDetails.accountNumber = accountNumber;
-    bankDetails.ifscCode = ifscCode;
-
-    // Save the updated bank details
+    // Save the bank details to the database
     await bankDetails.save();
+
+    // Associate the bank details with the user
+    userDocument.bankDetails = bankDetails._id;
+    await userDocument.save();
 
     return new Response(JSON.stringify({ success: true, message: 'Bank details updated successfully' }), { status: 200 });
   } catch (error) {

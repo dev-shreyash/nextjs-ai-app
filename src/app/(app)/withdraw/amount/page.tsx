@@ -37,7 +37,7 @@ const Page = () => {
   const onSubmit =()=>{
 
   }
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setInputAmount(value);
 
