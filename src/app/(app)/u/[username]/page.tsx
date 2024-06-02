@@ -16,14 +16,20 @@ const messageSchema = z.object({
   content: z.string(),
 });
 
+//axion error response
+interface ResponseData {
+  message: string;
+  success: boolean;
+}
+
 const Page = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedAmount, setSelectedAmount] = useState(null); // No default amount
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null); // Allow number or null
   const { toast } = useToast();
   const [acceptingStaus,setAcceptingStatus]=useState(false)
   const [isFunded,setIsFunded]=useState(false)
-  const [amountFunded, setAmountFunded]=useState(null)
+  const [amountFunded, setAmountFunded]=useState<number | null>(null); 
 
   // Function to extract username from the URL
   function getUsernameFromCurrentUrl() {
@@ -74,7 +80,7 @@ const Page = () => {
         order_id: data.id,
         description: "Thank you for your test donation",
         image: "https://manuarora.in/logo.png",
-        handler: function (response) {
+        handler: function (response: Response) {
        //   alert("Razorpay Response: " + response.razorpay_payment_id);
           handleDeposit(); // Call handleDeposit function here after successful payment
           submitMessage(); // Move the submitMessage call to the handler as well
@@ -178,7 +184,7 @@ const Page = () => {
     } catch (error) {
       console.error('Error during message sending:', error);
 
-      const axiosError = error as AxiosError;
+      const axiosError = error as AxiosError<ResponseData>;
 
       // Default error message
       let errorMessage = 'There was a problem with your sending message. Please try again.';
