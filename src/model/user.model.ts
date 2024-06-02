@@ -12,7 +12,7 @@ export interface BankDetails extends Document {
 // BankDetails Schema
 const BankDetailsSchema: Schema<BankDetails> = new Schema({
   name: { type: String, required: true, trim: true },
-  accountNumber: { type: String, required: true, trim: true, minlength: 10 },
+  accountNumber: { type: String, required: true, trim: true, minlength: 9 },
   ifscCode: { type: String, required: true, trim: true, length: 11 },
   createdAt: { type: Date, required: true, default: Date.now },
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true } // Reference to User model
