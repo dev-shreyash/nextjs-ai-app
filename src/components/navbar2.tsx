@@ -9,11 +9,12 @@ export default function Navbar2() {
     const { data: session } = useSession();
     const user: User = session?.user
     return (
-        <div className="flex items-center justify-between px-4 py-4 bg-white dark:bg-gray-800">
+        <nav className='p-4 md:p-6 shadow-md w-full max-w-6xl mx-auto'>
+        <div className="flex items-center  justify-between px-4  bg-white dark:bg-gray-800">
             <Link href="/" className="flex items-center gap-2" prefetch={false}>
                 <span className="text-lg font-semibold">FYH our Homie</span>
             </Link>
-            <div className="hidden md:flex gap-4">
+            <div className="hidden md:flex gap-4 ">
                 <Link href="/" className="text-lg font-medium hover:underline underline-offset-4" prefetch={false}>
                     Home
                 </Link>
@@ -98,6 +99,7 @@ export default function Navbar2() {
                 </SheetContent>
             </Sheet>
         </div>
+        </nav>
     )
 }
 
