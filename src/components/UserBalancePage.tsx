@@ -20,7 +20,7 @@ const UserBalancePage: React.FC = () => {
     const { data: session } = useSession();
     const [balance, setBalance] = useState<number>(0); // Explicitly set balance as number
     const [transactions, setTransactions] = useState<Transaction[]>([]); // Set the type for transactions
-    const withdrawalTransactions = transactions.filter(transaction => transaction.type === 'deposit');
+    const withdrawalTransactions = transactions.filter(transaction => transaction.type === 'withdrawal');
     const hasWithdrawals = withdrawalTransactions.length > 0;
 
     useEffect(() => {
@@ -45,13 +45,22 @@ const UserBalancePage: React.FC = () => {
         <div>
             <h1>Your Balance: {balance}</h1>
             {!hasWithdrawals ? (
-                <h3>No Withdrawals</h3>
+                 <Accordion type="single" collapsible>
+                 <AccordionItem value="item-1">
+                     <AccordionTrigger>
+                         <h2 className="">Withdrawal History</h2>
+                     </AccordionTrigger>
+                     <AccordionContent>
+                        <h3>No withdrawal history</h3>
+                     </AccordionContent>
+                 </AccordionItem>
+             </Accordion>
             ) : (
                 <div>
                     <Accordion type="single" collapsible>
                         <AccordionItem value="item-1">
                             <AccordionTrigger>
-                                <h2 className="">Transaction History</h2>
+                                <h2 className="">Withdrawal History</h2>
                             </AccordionTrigger>
                             <AccordionContent>
                                 <ul>

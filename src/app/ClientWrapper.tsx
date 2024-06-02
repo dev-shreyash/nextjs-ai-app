@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Toaster } from '@/components/ui/toaster';
 import Navbar from '@/components/Navbar';
+import Navbar2 from '@/components/navbar2';
 
 const ClientWrapper = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
@@ -12,7 +13,7 @@ const ClientWrapper = ({ children }: { children: React.ReactNode }) => {
   
     return (
       <>
-        {showNavbar && <Navbar />}
+        {showNavbar && <Navbar2/>}
         {children}
         <Toaster />
       </>

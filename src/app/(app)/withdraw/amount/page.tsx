@@ -78,10 +78,15 @@ const Page = () => {
           className='my-8'
           type="submit"
           onClick={form.handleSubmit(onSubmit)}
-          disabled={inputAmount > balance}
+          //disabled={inputAmount > balance}
+          disabled
         >
           Confirm
+
         </Button>
+        <FormDescription className='text-s p-0 m-0 text-red-600'>
+          *Withdrawal is not supported currently
+        </FormDescription>
       </Form>
     </div>
   )

@@ -74,10 +74,13 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
                 <AlertDialogCancel>
                   Cancel
                 </AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteConfirm}>
+                <AlertDialogAction onClick={handleDeleteConfirm} disabled>
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>
+              <AlertDialogDescription>
+                <p className='text-red-600'>*Currently you are not allowed to delete</p>
+                </AlertDialogDescription>
             </AlertDialogContent>
           </AlertDialog>
         </div>

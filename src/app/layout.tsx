@@ -7,7 +7,7 @@ import ClientWrapper from './ClientWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'get Adviced',
+  title: 'Fund Your Homie',
   description: 'get real advice from real peoples.',
 };
 

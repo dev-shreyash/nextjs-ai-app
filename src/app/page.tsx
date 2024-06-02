@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import messages from '@/messages.json';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import Link from 'next/link';
 
 const Page = () => {
   const [isClient, setIsClient] = useState(false);
@@ -28,7 +29,6 @@ const Page = () => {
             Fund your Homie - Empowering Conversations, One Anonymous Tip at a Time.
           </p>
         </section>
-
         {/* Carousel for Messages */}
         {isClient ? (
           <Carousel
@@ -61,6 +61,20 @@ const Page = () => {
             Loading...
           </div>
         )}
+          <div className="text-center">
+            <p className="text-lg mb-8">A crowdfunding platform to support your dreams and causes</p>
+            <Link href="/about">
+              <p className="text-lg font-medium hover:underline underline-offset-4">Learn More</p>
+            </Link>
+          </div>
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-4">How It Works</h2>
+            <p className="text-lg mb-4">Fund Your Homie makes it easy for individuals to raise funds for various purposes, including personal needs, projects, and charitable causes.</p>
+            <p className="text-lg mb-4">To get started, simply create a free account and set up your fundraising campaign. Share your campaign link with your network and start receiving donations.</p>
+            <p className="text-lg">Donors have the flexibility to contribute anonymously and leave messages of support for your cause.</p>
+          </div>
+        
+        
       </div>
 
       {/* Footer */}
