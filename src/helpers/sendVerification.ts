@@ -1,7 +1,7 @@
-import { resend } from "@/lib/resend"
-import { ApiResponse } from "@/types/ApiResponse"
+import React from 'react';
+import { resend } from "@/lib/resend";
+import { ApiResponse } from "@/types/ApiResponse";
 import VerificationEmail from "../../verification-email/verificationEmail";
-import ReactDOMServer from 'react-dom/server';
 
 export async function sendVerificationEmail(
     email: string,
@@ -10,12 +10,7 @@ export async function sendVerificationEmail(
 ): Promise<ApiResponse> {
     try {
         console.log("email:", email)
-        const reactContent = ReactDOMServer.renderToStaticMarkup(
-            VerificationEmail({
-                username,
-                otp: verifyCode
-            })
-        );
+        const reactContent = React.createElement(VerificationEmail, { username, otp: verifyCode });
         const data = await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: 'bhosaleshreyash2@gmail.com',
