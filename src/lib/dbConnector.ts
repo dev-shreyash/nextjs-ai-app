@@ -22,7 +22,7 @@ export async function dbConnect(): Promise<void>{
     } catch (error) {
         console.log("DB connection failed");
         
-        process.exit(1)
+         throw error; 
     }
 
 }

@@ -86,11 +86,17 @@ const Page = () => {
           handleDeposit(); // Call handleDeposit function here after successful payment
           submitMessage(); // Move the submitMessage call to the handler as well
         },
-        prefill: {
-          name: "Shreyash Godmon",
-          email: "admin@indradhanu.online",
-          contact: "98534525519",
-        },
+       prefill: {
+  name: "Shreyash Godmon",
+  email: "test.user@example.com", // Add a fallback test email
+  contact: "9999999999",         // Add a 10-digit test phone number
+},
+  readonly: {
+    contact: true,
+    email: true,
+    name: true
+  },
+
       };
 
       const paymentObject = new window.Razorpay(options);
