@@ -62,6 +62,16 @@ export default function SignInForm() {
             Welcome Back to Fund Your Homie
           </h1>
           <p className="mb-4">Sign in to continue your secret</p>
+          {/*Demo credentials */}
+          <div className="bg-gray-100 p-2 rounded-lg mb-2">
+            <p className="text-sm text-gray-600 mb-2">Demo Credentials:</p>
+            <p className="text-sm text-gray-800">
+              <span className="font-semibold">Username:</span> demo
+            </p>
+            <p className="text-sm text-gray-800">
+              <span className="font-semibold">Password:</span> 12345678
+            </p>
+          </div>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
