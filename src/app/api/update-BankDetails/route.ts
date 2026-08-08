@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]/options';
+import { auth } from "@/auth";
 import { dbConnect } from '@/lib/dbConnector';
 import UserModel, { BankDetailsModel } from '@/model/user.model';
 import { BankDetailsSchema } from '@/schemas/BankDetailsSchema';
@@ -8,7 +7,7 @@ import { BankDetailsSchema } from '@/schemas/BankDetailsSchema';
 export async function POST(req: Request) {
   await dbConnect();
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   console.log(session);
   
   if (!session || !session.user) {

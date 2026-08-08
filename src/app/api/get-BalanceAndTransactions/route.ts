@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]/options';
+import { auth } from "@/auth";
 import { dbConnect } from '@/lib/dbConnector';
 import UserModel from '@/model/user.model';
 import TransactionModel from '@/model/transaction.model';
@@ -8,7 +7,7 @@ import TransactionModel from '@/model/transaction.model';
 export async function GET(req: Request) {
   await dbConnect();
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session || !session.user) {
     return new Response(JSON.stringify({ success: false, message: 'Not authenticated' }), { status: 401 });

@@ -1,12 +1,52 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from 'next-auth/providers/credentials';
+import type { NextAuthConfig } from "next-auth";
+// 1. Updated to the modern Next-Auth v5 provider import paths
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from 'bcryptjs';
 import { dbConnect } from "@/lib/dbConnector";
 import UserModel, { BankDetailsModel } from "@/model/user.model";
 
-export const authOptions: NextAuthOptions = {
+// 2. TypeScript Module Augmentation to natively support custom session & token properties
+declare module "next-auth" {
+  interface Session {
+    user: {
+      _id?: string;
+      username?: string;
+      isVerified?: boolean;
+      isAcceptingMessages?: boolean;
+      bankDetails?: {
+        name: string;
+        accountNumber: string;
+        ifscCode: string;
+      };
+    } & any; // Keeps flexibility for base fields like email/image
+  }
+
+  interface User {
+    _id?: any;
+    username?: string;
+    isVerified?: boolean;
+    isAcceptingMessages?: boolean;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    _id?: string;
+    username?: string;
+    isVerified?: boolean;
+    isAcceptingMessages?: boolean;
+    bankDetails?: {
+      name: string;
+      accountNumber: string;
+      ifscCode: string;
+    };
+  }
+}
+
+// 3. Changed type schema profile to look for NextAuthConfig exclusively
+export const authOptions: NextAuthConfig = {
   providers: [
-    CredentialsProvider({
+    Credentials({
       id: 'credentials',
       name: 'Credentials',
       credentials: {
@@ -18,8 +58,8 @@ export const authOptions: NextAuthOptions = {
         try {
           const user = await UserModel.findOne({
             $or: [
-              { email: credentials.identifier}, // Ensure this matches your form input names
-              { username: credentials.identifier }, // Ensure this matches your form input names
+              { email: credentials.identifier},
+              { username: credentials.identifier },
             ],
           });
           if (!user) {
@@ -65,13 +105,13 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user._id = token._id;
         session.user.username = token.username;
         session.user.isVerified = token.isVerified;
         session.user.isAcceptingMessages = token.isAcceptingMessages;
 
-        // Include bank details in the session
+        // Include bank details in the session object
         if (token.bankDetails) {
           session.user.bankDetails = token.bankDetails;
         }

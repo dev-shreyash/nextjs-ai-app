@@ -1,8 +1,7 @@
 // src/app/api/get-BankDetails/route.ts
 
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]/options';
+import { auth } from "@/auth";
 import { dbConnect } from '@/lib/dbConnector';
 import UserModel, { BankDetailsModel } from '@/model/user.model';
 import { User } from 'next-auth';
@@ -10,7 +9,7 @@ import { User } from 'next-auth';
 export async function GET() {
   await dbConnect();
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const user: User = session?.user;
 
   if (!session || !session.user) {

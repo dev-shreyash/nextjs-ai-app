@@ -1,22 +1,21 @@
 import UserModel from '@/model/user.model';
-import { getServerSession } from 'next-auth/next';
-import { dbConnect }from '@/lib/dbConnector';
+import { auth } from "@/auth";
+import { dbConnect } from '@/lib/dbConnector';
 import { User } from 'next-auth';
-import { Message } from '@/model/user.model';
 import { NextRequest } from 'next/server';
-import { authOptions } from '../../auth/[...nextauth]/options';
 
-export async function DELETE(request: Request,
-  { params }: { params: { messageid: string } }
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ messageid: string }> } 
 ) {
-  const messageId = params.messageid;
-
+  // 1. Explicitly await the asynchronous route params
+  const { messageid } = await params; 
+  
   await dbConnect();
 
-  const session = await getServerSession(authOptions);
-
-  const _user: User = session?.user;
-
+  // 2. Fetch the session using the Next-Auth v5 auth() wrapper
+  const session = await auth();
+  const _user: User | undefined = session?.user;
 
   if (!session || !_user) {
     return Response.json(
@@ -26,9 +25,10 @@ export async function DELETE(request: Request,
   }
 
   try {
+    // 3. Updated query to use 'messageid' matching the variable above
     const updateResult = await UserModel.updateOne(
       { _id: _user._id },
-      { $pull: { messages: { _id: messageId } } }
+      { $pull: { messages: { _id: messageid } } }
     );
 
     if (updateResult.modifiedCount === 0) {
